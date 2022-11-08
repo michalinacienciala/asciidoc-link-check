@@ -1,0 +1,59 @@
+name: Test broken links detection
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  detect-broken-links-recursively: #ok
+    name: Detect broken links recursively
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    # with:
+    #   checkAsciiDoc: false
+    #   checkMarkdown: false
+    #   path: ./test
+  detect-broken-links-single-file-root-1:
+    name: Detect broken links in single md file in root 1
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    with:
+      checkAsciiDoc: false
+      checkMarkdown: true
+      path: test-0.md
+  detect-broken-links-single-file-root-2:
+    name: Detect broken links in single md file in root 2
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    with:
+      checkAsciiDoc: false
+      checkMarkdown: true
+      path: ./test-0.md
+  detect-broken-links-single-adoc-file-root-1:
+    name: Detect broken links in single md file in root 1
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    with:
+      checkAsciiDoc: true
+      checkMarkdown: false
+      path: test-0.adoc
+  detect-broken-links-single-adoc-file-root-2:
+    name: Detect broken links in single md file in root 2
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    with:
+      checkAsciiDoc: true
+      checkMarkdown: false
+      path: ./test-0.adoc
+  detect-broken-links-asterisk:
+    name: Detect broken links in single file in root (asterisk)
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    with:
+      checkAsciiDoc: true
+      checkMarkdown: true
+      path: test-0.*
+  detect-broken-links-single-file-subfolder:
+    name: Detect broken links in single file in subfolder
+    uses: ./.github/workflows/reusable-broken-links-check.yml
+    with:
+      checkAsciiDoc: true
+      checkMarkdown: true
+      path: ./test

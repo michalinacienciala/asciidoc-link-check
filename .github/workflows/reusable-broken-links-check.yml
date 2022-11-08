@@ -1,0 +1,56 @@
+name: Detect broken links
+on:
+  workflow_call:
+    inputs:
+      checkAsciiDoc:
+        description: True if AsciiDoc `.adoc` files should be checked.
+        required: false
+        default: true
+        type: boolean
+      checkMarkdown:
+        description: True if Markdown `.md` files should be checked.
+        required: false
+        default: true
+        type: boolean
+      path:
+        description: > 
+          Directory which should be recursively checked for broken links in
+          `.ascidoc` / `.md` files.
+        required: false
+        default: .
+        type: string
+
+jobs:
+  detect-broken-links-adoc:
+    if: inputs.checkAsciiDoc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # We're not using cache functionality of the `seup-node` action, as it
+      # requires `package-lock.json` or `yarn.lock` to be present and we cannot
+      # guarantee it will always be present in the directory that we want to
+      # check.
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        shell: bash
+        run: npm install -g asciidoc-link-check
+
+      - name: Run check of the links (method 1)
+        run: find ${{ inputs.path }} -name \*.adoc -exec asciidoc-link-check -p {} \;
+
+      - name: Run check of the links (method 2)
+        run: find ${{ inputs.path }} -name \*.adoc | xargs -n1 asciidoc-link-check -p
+
+  detect-broken-links-md:
+    if: inputs.checkMarkdown
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          folder-path: ${{ inputs.path }}

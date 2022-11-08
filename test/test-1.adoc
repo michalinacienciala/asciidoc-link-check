@@ -1,0 +1,24 @@
+= AsciiDoc Test-1
+
+[#invalid_links]
+== Invalid links and references
+
+Link to non-existing page: https://www.this-link-points-to-a-non-existing-page.com/.
+
+Link to a page returning 404 error: https://github.com/keep-network/keep-core/tree/non-existing-branch.
+
+https://www.this-link-points-to-a-non-existing-page.com/[This] is another link to a non-existing page.
+
+link:https://www.this-link-points-to-a-non-existing-page.com/[This] is another link to a non-existing page.
+
+The end of this sentence is <<invalid_links,an invalid reference>>.
+
+== Valid links and references
+
+Link to a valid page: https://www.google.com/.
+
+https://www.google.com/[This] is another link to a valid page.
+
+link:https://www.google.com/[This] is another link to a non-existing page.
+
+The end of this sentence is a valid reference to <<invalid_links,another section>>.

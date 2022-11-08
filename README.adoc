@@ -1,0 +1,2 @@
+# asciidoc-link-check
+A GitHub Action used for detecting dead links in asciidoc files
